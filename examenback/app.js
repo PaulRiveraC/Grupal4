@@ -70,7 +70,7 @@ app.post('/cliente', (req, resp) => {
   // client.connect();
   client
     .query(
-      'insert into clientes(nombre, telefono, direccion, email) VALUES ($1, $2, $3, $4) RETURNING *',
+      'insert into clientes(nombre, teléfono, dirección, email) VALUES ($1, $2, $3, $4) RETURNING *',
       [req.body.nombre, req.body.telefono, req.body.direccion, req.body.email]
     )
     .then((responseQuery) => {
@@ -91,7 +91,7 @@ app.post('/productos', (req, resp) => {
   // client.connect();
   client
     .query(
-      'INSERT INTO productos(nombre, categoria, precio, stock)	VALUES ($1, $2, $3, $4) RETURNING *',
+      'INSERT INTO productos(nombre, categoría, precio, stock)	VALUES ($1, $2, $3, $4) RETURNING *',
       [req.body.nombre, req.body.categoria, req.body.precio, req.body.stock]
     )
     .then((responseQuery) => {
