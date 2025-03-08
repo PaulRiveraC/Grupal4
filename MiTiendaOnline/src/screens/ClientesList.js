@@ -2,15 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const ClientesList = ({ navigation }) => {
+const ClientesList = ({ navigation, route }) => {
   const [clientes, setClientes] = useState([]);
 
-  // Obtener la lista de clientes
-  useEffect(() => {
-    axios.get('http://localhost:3001/clientes') // Cambia la IP por la de tu computadora
+  const fetchClientes = () => {
+    axios.get('http://192.168.100.45:3001/clientes')
       .then(response => setClientes(response.data))
       .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    fetchClientes();
   }, []);
+
+  useEffect(() => {
+    if (route.params?.refresh) {
+      fetchClientes();
+    }
+  }, [route.params?.refresh]);
 
   return (
     <View style={styles.container}>
@@ -20,8 +29,10 @@ const ClientesList = ({ navigation }) => {
         keyExtractor={item => item.id_cliente.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>{item.nombre}</Text>
-            <Text>{item.email}</Text>
+            <Text>Nombre: {item.nombre}</Text>
+            <Text>Teléfono: {item.teléfono}</Text>
+            <Text>Dirección: {item.dirección}</Text>
+            <Text>Email: {item.email}</Text>
           </View>
         )}
       />

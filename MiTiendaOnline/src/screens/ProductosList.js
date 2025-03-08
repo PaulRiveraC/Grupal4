@@ -5,11 +5,19 @@ import axios from 'axios';
 const ProductosList = ({ navigation }) => {
   const [productos, setProductos] = useState([]);
 
-  // Obtener la lista de productos
-  useEffect(() => {
-    axios.get('http://localhost/productos') // Cambia la IP por la de tu computadora
-      .then(response => setProductos(response.data))
+  // Función para obtener la lista de productos
+  const fetchProductos = () => {
+    axios.get('http://192.168.100.45:3001/productos')
+      .then(response => {
+        console.log('Datos recibidos:', response.data); // Verifica los datos en la consola
+        setProductos(response.data);
+      })
       .catch(error => console.error(error));
+  };
+
+  // Llama a fetchProductos al cargar el componente
+  useEffect(() => {
+    fetchProductos();
   }, []);
 
   return (
@@ -20,15 +28,17 @@ const ProductosList = ({ navigation }) => {
         keyExtractor={item => item.id_producto.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>{item.nombre}</Text>
-            <Text>Precio: ${item.precio}</Text>
-            <Text>Stock: {item.stock}</Text>
+            <Text>ID: {item.id_producto || 'N/A'}</Text>
+            <Text>Nombre: {item.nombre || 'N/A'}</Text>
+            <Text>Categoría: {item.categoría || 'Sin categoría'}</Text>
+            <Text>Precio: ${item.precio ? parseFloat(item.precio).toFixed(2) : 'N/A'}</Text>
+            <Text>Stock: {item.stock || 'N/A'}</Text>
           </View>
         )}
       />
       <TouchableOpacity
         style={styles.botonAgregar}
-        onPress={() => navigation.navigate('ProductosFormNav')}
+        onPress={() => navigation.navigate('ProductosFormNav', { refresh: fetchProductos })}
       >
         <Text style={styles.textoBoton}>Agregar Producto</Text>
       </TouchableOpacity>

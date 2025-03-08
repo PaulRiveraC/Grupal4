@@ -1,33 +1,60 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
-const ProductosForm = ({ navigation }) => {
-  const [nombre, setNombre] = useState('');
-  const [precio, setPrecio] = useState('');
-  const [stock, setStock] = useState('');
+const ProductosForm = ({ navigation, route }) => {
+  const { producto, refresh } = route.params || {};
+  const [nombre, setNombre] = useState(producto?.nombre || '');
+  const [categoria, setCategoria] = useState(producto?.categoría || '');
+  const [precio, setPrecio] = useState(producto?.precio?.toString() || '');
+  const [stock, setStock] = useState(producto?.stock?.toString() || '');
 
   const handleSubmit = () => {
-    axios.post('http://localhost:3001/productos', { // Cambia la IP por la de tu computadora
+    const payload = {
       nombre,
+      categoría: categoria, // Asegúrate de que el nombre del campo coincida con la columna en la base de datos
       precio: parseFloat(precio),
       stock: parseInt(stock),
-    })
-    .then(response => {
-      alert('Producto agregado');
-      navigation.navigate('ProductosListNav'); // Regresa a la lista después de agregar
-    })
-    .catch(error => console.error(error));
+    };
+
+    if (producto) {
+      // Si hay un producto, es una edición
+      axios.put(`http://192.168.100.45:3001/productos/${producto.id_producto}`, payload)
+        .then(response => {
+          alert('Producto actualizado');
+          refresh(); // Llama a la función refresh para actualizar la lista
+          navigation.navigate('ProductosListNav');
+        })
+        .catch(error => console.error(error));
+    } else {
+      // Si no hay un producto, es una creación
+      axios.post('http://192.168.100.45:3001/productos', payload)
+        .then(response => {
+          alert('Producto agregado');
+          refresh(); // Llama a la función refresh para actualizar la lista
+          navigation.navigate('ProductosListNav');
+        })
+        .catch(error => console.error(error));
+    }
   };
 
   return (
     <View style={styles.container}>
+      <Text>Nombre:</Text>
       <TextInput
         placeholder="Nombre"
         value={nombre}
         onChangeText={setNombre}
         style={styles.input}
       />
+      <Text>Categoría:</Text>
+      <TextInput
+        placeholder="Categoría"
+        value={categoria}
+        onChangeText={setCategoria}
+        style={styles.input}
+      />
+      <Text>Precio:</Text>
       <TextInput
         placeholder="Precio"
         value={precio}
@@ -35,6 +62,7 @@ const ProductosForm = ({ navigation }) => {
         keyboardType="numeric"
         style={styles.input}
       />
+      <Text>Stock:</Text>
       <TextInput
         placeholder="Stock"
         value={stock}
@@ -42,7 +70,7 @@ const ProductosForm = ({ navigation }) => {
         keyboardType="numeric"
         style={styles.input}
       />
-      <Button title="Agregar Producto" onPress={handleSubmit} />
+      <Button title={producto ? "Actualizar Producto" : "Agregar Producto"} onPress={handleSubmit} />
     </View>
   );
 };

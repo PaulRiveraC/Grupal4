@@ -9,7 +9,7 @@ const ClientesForm = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
-    axios.post('http://localhost/cliente', { // Cambia la IP por la de tu computadora
+    axios.post('http://192.168.100.45:3001/cliente', { // Cambia la IP por la de tu computadora
       nombre,
       telefono,
       direccion,
