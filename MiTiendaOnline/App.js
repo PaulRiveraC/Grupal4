@@ -1,23 +1,24 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Input, Button } from '@rneui/base';
-import AgregarCliente from './screens/AgregarCliente';
-import AgregarProducto from './screens/AgregarProducto';
-import ListaClientes from './screens/ListaClientes';
-import ListaProductos from './screens/ListaProductos';
+import PantallaClientes from './src/screens/PantallaClientes';
+import PantallaProductos from './src/screens/PantallaProductos';
+import InsertarCliente from './src/screens/InsertarCliente';
+import InsertarProducto from './src/screens/InsertarProducto';
 
 const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="AgregarCliente" component={AgregarCliente} />
-        <Stack.Screen name="AgregarProducto" component={AgregarProducto} />
-        <Stack.Screen name="ListaClientes" component={ListaClientes} />
-        <Stack.Screen name="ListaProductos" component={ListaProductos} />
+        <Stack.Screen name="Clientes" component={PantallaClientes} />
+        <Stack.Screen name="Productos" component={PantallaProductos} />
+        <Stack.Screen name="InsertarCliente" component={InsertarCliente} />
+        <Stack.Screen name="InsertarProducto" component={InsertarProducto} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default App;
