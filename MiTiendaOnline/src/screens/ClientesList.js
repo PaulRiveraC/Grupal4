@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const PantallaClientes = () => {
+const ClientesList = ({ navigation }) => {
   const [clientes, setClientes] = useState([]);
 
-  // Obtener los clientes de la API
+  // Obtener la lista de clientes
   useEffect(() => {
-    axios.get('http://localhost:3001/clientes')
+    axios.get('http://localhost:3001/clientes') // Cambia la IP por la de tu computadora
       .then(response => setClientes(response.data))
       .catch(error => console.error(error));
   }, []);
@@ -25,6 +25,12 @@ const PantallaClientes = () => {
           </View>
         )}
       />
+      <TouchableOpacity
+        style={styles.botonAgregar}
+        onPress={() => navigation.navigate('ClientesFormNav')}
+      >
+        <Text style={styles.textoBoton}>Agregar Cliente</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -44,6 +50,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  botonAgregar: {
+    backgroundColor: '#007BFF',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  textoBoton: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
-export default PantallaClientes;
+export default ClientesList;

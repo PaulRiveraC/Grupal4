@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const PantallaProductos = () => {
+const ProductosList = ({ navigation }) => {
   const [productos, setProductos] = useState([]);
 
-  // Obtener los productos de la API
+  // Obtener la lista de productos
   useEffect(() => {
-    axios.get('http://localhost:3001/productos')
+    axios.get('http://localhost/productos') // Cambia la IP por la de tu computadora
       .then(response => setProductos(response.data))
       .catch(error => console.error(error));
   }, []);
@@ -26,6 +26,12 @@ const PantallaProductos = () => {
           </View>
         )}
       />
+      <TouchableOpacity
+        style={styles.botonAgregar}
+        onPress={() => navigation.navigate('ProductosFormNav')}
+      >
+        <Text style={styles.textoBoton}>Agregar Producto</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -45,6 +51,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  botonAgregar: {
+    backgroundColor: '#007BFF',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  textoBoton: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
-export default PantallaProductos;
+export default ProductosList;

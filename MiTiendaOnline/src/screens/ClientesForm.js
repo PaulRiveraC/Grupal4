@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
-const InsertarCliente = () => {
+const ClientesForm = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
-    axios.post('http://localhost:3001/cliente', {
+    axios.post('http://localhost/cliente', { // Cambia la IP por la de tu computadora
       nombre,
       telefono,
       direccion,
       email
     })
-    .then(response => alert('Cliente agregado'))
+    .then(response => {
+      alert('Cliente agregado');
+      navigation.navigate('ClientesListNav'); // Regresa a la lista después de agregar
+    })
     .catch(error => console.error(error));
   };
 
@@ -64,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InsertarCliente;
+export default ClientesForm;

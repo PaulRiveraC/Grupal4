@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
-const InsertarProducto = () => {
+const ProductosForm = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
-  const [categoria, setCategoria] = useState('');
   const [precio, setPrecio] = useState('');
   const [stock, setStock] = useState('');
 
   const handleSubmit = () => {
-    axios.post('http://localhost:3001/productos', {
+    axios.post('http://localhost:3001/productos', { // Cambia la IP por la de tu computadora
       nombre,
-      categoria,
       precio: parseFloat(precio),
       stock: parseInt(stock),
     })
-    .then(response => alert('Producto agregado'))
+    .then(response => {
+      alert('Producto agregado');
+      navigation.navigate('ProductosListNav'); // Regresa a la lista después de agregar
+    })
     .catch(error => console.error(error));
   };
 
@@ -25,12 +26,6 @@ const InsertarProducto = () => {
         placeholder="Nombre"
         value={nombre}
         onChangeText={setNombre}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Categoría"
-        value={categoria}
-        onChangeText={setCategoria}
         style={styles.input}
       />
       <TextInput
@@ -66,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InsertarProducto;
+export default ProductosForm;

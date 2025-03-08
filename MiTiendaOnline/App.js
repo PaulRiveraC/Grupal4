@@ -1,24 +1,37 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import PantallaClientes from './src/screens/PantallaClientes';
-import PantallaProductos from './src/screens/PantallaProductos';
-import InsertarCliente from './src/screens/InsertarCliente';
-import InsertarProducto from './src/screens/InsertarProducto';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ClientesList from './src/screens/ClientesList'; // Asegúrate de que esta ruta sea correcta
+import ClientesForm from './src/screens/ClientesForm'; // Asegúrate de que esta ruta sea correcta
+import ProductosList from './src/screens/ProductosList'; // Asegúrate de que esta ruta sea correcta
+import ProductosForm from './src/screens/ProductosForm'; // Asegúrate de que esta ruta sea correcta
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator(); // Uso correcto
 
-const App = () => {
+export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Clientes" component={PantallaClientes} />
-        <Stack.Screen name="Productos" component={PantallaProductos} />
-        <Stack.Screen name="InsertarCliente" component={InsertarCliente} />
-        <Stack.Screen name="InsertarProducto" component={InsertarProducto} />
+      <Stack.Navigator initialRouteName='ClientesListNav'>
+        <Stack.Screen 
+          name="ClientesListNav" 
+          component={ClientesList} 
+          options={{ title: 'Lista de Clientes' }}
+        />
+        <Stack.Screen 
+          name="ClientesFormNav" 
+          component={ClientesForm} 
+          options={{ title: 'Agregar Cliente' }}
+        />
+        <Stack.Screen 
+          name="ProductosListNav" 
+          component={ProductosList} 
+          options={{ title: 'Lista de Productos' }}
+        />
+        <Stack.Screen 
+          name="ProductosFormNav" 
+          component={ProductosForm} 
+          options={{ title: 'Agregar Producto' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-export default App;
+}
